@@ -16,7 +16,7 @@ class ProyectoAdmin(admin.ModelAdmin):
     inlines = (GrupoInLine, )
     fieldsets = (
         ('Descripcion de proyecto', {
-            'fields': ('nombre', 'descripcion', 'numero_horas', 'ubicacion', )
+            'fields': ('nombre', 'administrador', 'descripcion', 'numero_horas', 'ubicacion', )
         }),
         ('Fechas de registro', {
             'fields': ('fecha_registro_inicio', 'fecha_registro_fin',)
@@ -29,5 +29,4 @@ class ProyectoAdmin(admin.ModelAdmin):
 
 admin.site.register(Ubicacion)
 admin.site.register(Carrera)
-admin.site.register(Grupo)
 admin.site.register(Proyecto, ProyectoAdmin)

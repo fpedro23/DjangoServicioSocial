@@ -50,7 +50,7 @@ class Proyecto(models.Model):
     semestre_minimo = models.IntegerField()
     ubicacion = models.ForeignKey(Ubicacion)
     carreras = models.ManyToManyField(Carrera)
-    administrador = models.ForeignKey(User)
+    administrador = models.ForeignKey(User, default=1)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.nombre
