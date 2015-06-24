@@ -1,0 +1,16 @@
+<h1>Proyectos</h1>
+<ul>
+{% for proyecto in object_list %}
+    <li>
+        <p>
+            <a href="/proyecto/{{ proyecto.id }}/">{{ proyecto.nombre }} - {{ proyecto.numero_horas}} horas</a>
+                 {%for carrera in proyecto.carreras.all %}
+                    {{ carrera.iniciales }},
+                 {% endfor %}
+        </p>
+    </li>
+
+{% empty %}
+    <li>Aun no hay proyectos</li>
+{% endfor %}
+</ul>

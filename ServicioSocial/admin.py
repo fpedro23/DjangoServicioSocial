@@ -29,4 +29,5 @@ class ProyectoAdmin(admin.ModelAdmin):
 
 admin.site.register(Ubicacion)
 admin.site.register(Carrera)
+admin.site.register(ListaEspera)
 admin.site.register(Proyecto, ProyectoAdmin)

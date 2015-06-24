@@ -55,3 +55,11 @@ class Proyecto(models.Model):
     def __str__(self):  # __unicode__ on Python 2
         return self.nombre
 
+
+class ListaEspera(models.Model):
+    usuario = models.ForeignKey(User)
+    proyecto = models.ForeignKey(Proyecto)
+    aprobado = models.NullBooleanField()
+
+    class Meta:
+        unique_together = ('usuario', 'proyecto')
