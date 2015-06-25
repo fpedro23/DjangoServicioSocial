@@ -54,9 +54,25 @@ class Grupo(models.Model):
     nombre = models.CharField(max_length=200)
     capacidad = models.IntegerField()
     proyecto = models.ForeignKey('Proyecto', blank=True, null=True)
+    alumnos = models.ManyToManyField(User, through='DetalleInscripcion')
 
     def __str__(self):
         return self.nombre + ' - ' + self.proyecto.nombre
+
+
+@python_2_unicode_compatible
+class DetalleInscripcion(models.Model):
+    grupo = models.ForeignKey(Grupo)
+    usuario = models.ForeignKey(User)
+    aprobado = models.NullBooleanField()
+
+    def __str__(self):
+        return self.grupo.nombre + ' - ' + self.grupo.proyecto.nombre
+
+    class Meta:
+        unique_together = ('usuario', 'grupo')
+        verbose_name = 'Alumno'
+        verbose_name_plural = 'Alumnos'
 
 
 @python_2_unicode_compatible
@@ -82,11 +98,12 @@ class Proyecto(models.Model):
 @python_2_unicode_compatible
 class ListaEspera(models.Model):
     usuarios = models.ManyToManyField(User, through='DetalleEspera')
-    grupo = models.ForeignKey(Grupo, default=1)
+    grupo = models.ForeignKey(Grupo, default=1, unique=True)
 
     class Meta:
         verbose_name_plural = 'Listas de Espera'
         verbose_name = 'Lista de espera'
+
 
     def __str__(self):
         return self.grupo.nombre + ' - ' + self.grupo.proyecto.nombre
@@ -99,7 +116,8 @@ class DetalleEspera(models.Model):
     aprobado = models.NullBooleanField()
 
     def __str__(self):
-        return self.lista_espera.grupo.__str__()
+        return self.lista_espera.grupo.nombre + ' - ' + self.lista_espera.grupo.proyecto.nombre
 
     class Meta:
         unique_together = ('usuario', 'lista_espera')
+        verbose_name_plural = 'Alumnos en la lista de espera'

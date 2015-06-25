@@ -1,13 +1,26 @@
 from django.contrib import admin
 
 from ServicioSocial.models import *
+from ServicioSocial.forms import *
 
 # Register your models here.
 
 
 class UsuariosInLine(admin.TabularInline):
     model = DetalleEspera
+    form = AddDetalleEsperaForm
     extra = 0
+
+
+class UsuarioGrupoInLine(admin.TabularInline):
+    model = DetalleInscripcion
+    extra = 0
+    readonly_fields = ['email', ]
+
+    def email(self, instance):
+        return instance.usuario.email
+
+    email.short_description = 'Email'
 
 
 class HorarioInLine(admin.StackedInline):
@@ -25,7 +38,7 @@ class ListaEsperaAdmin(admin.ModelAdmin):
 
 
 class GrupoAdmin(admin.ModelAdmin):
-    inlines = (HorarioInLine, )
+    inlines = [HorarioInLine, UsuarioGrupoInLine]
 
 
 class ProyectoAdmin(admin.ModelAdmin):
