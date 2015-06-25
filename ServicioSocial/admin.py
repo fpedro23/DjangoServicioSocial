@@ -1,15 +1,31 @@
 from django.contrib import admin
 
-from ServicioSocial.forms import *
-
+from ServicioSocial.models import *
 
 # Register your models here.
 
 
+class UsuariosInLine(admin.TabularInline):
+    model = DetalleEspera
+    extra = 0
+
+
+class HorarioInLine(admin.StackedInline):
+    model = Horario
+    extra = 0
+
+
 class GrupoInLine(admin.StackedInline):
     model = Grupo
-    form = GrupoAddForm
     extra = 1
+
+
+class ListaEsperaAdmin(admin.ModelAdmin):
+    inlines = (UsuariosInLine, )
+
+
+class GrupoAdmin(admin.ModelAdmin):
+    inlines = (HorarioInLine, )
 
 
 class ProyectoAdmin(admin.ModelAdmin):
@@ -29,5 +45,6 @@ class ProyectoAdmin(admin.ModelAdmin):
 
 admin.site.register(Ubicacion)
 admin.site.register(Carrera)
-admin.site.register(ListaEspera)
+admin.site.register(Grupo, GrupoAdmin)
 admin.site.register(Proyecto, ProyectoAdmin)
+admin.site.register(ListaEspera, ListaEsperaAdmin)

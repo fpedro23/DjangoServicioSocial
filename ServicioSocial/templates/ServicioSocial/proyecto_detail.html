@@ -1,3 +1,8 @@
+{% extends 'registration/base.html' %}
+
+{% block header %}
+{% endblock %}
+
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -5,23 +10,77 @@
     <title></title>
 </head>
 <body>
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="/">Proyectos</a>
+        {% if title %} &rsaquo; {{ title }}{% endif %}
+    </div>
+{% endblock %}
+
+{% block content %}
 <h1>{{ object.nombre }} - {{ object.numero_horas }} horas</h1>
-<p>{{ object.descripcion }}</p>
-<p>Fecha de registro del: {{ object.fecha_registro_inicio }} al: {{ object.fecha_registro_fin }} </p>
-<p>Requisitos: {{ object.requisitos}}</p>
-<p>Semestre desde: {{ object.semestre_minimo }} hasta: {{ object.semestre_maximo }} </p>
-<p>Ubicacion: {{ object.ubicacion.direccion }} </p>
-<p>Carreras:
 
-    {%for carrera in object.carreras.all %}
-    {{ carrera.iniciales }},
+    <h2> Descripcion </h2>
+
+    <p>{{ object.descripcion }}</p>
+
+    <h2> Fecha de registro </h2>
+
+    <p> Del {{ object.fecha_registro_inicio }} al {{ object.fecha_registro_fin }} </p>
+
+    <h2> Requisitos </h2>
+
+    <p> {{ object.requisitos }} </p>
+
+    <h2> Semestres </h2>
+
+    <p>Semestres desde {{ object.semestre_minimo }}º hasta: {{ object.semestre_maximo }}º</p>
+
+    <h2> Ubicacion </h2>
+
+    <p>{{ object.ubicacion.direccion }} </p>
+
+    <h2>Carreras</h2>
+    <ul>
+        {% for carrera in object.carreras.all %}
+            <li>{{ carrera.iniciales }} </li>
     {% endfor %}
+    </ul>
 
-</p>
 
-<p>Administrador: {{ object.administrador }} - {{ object.administrador.email }} </p>
+    <h2>
+        Grupos
+    </h2>
 
+    <form action="/proyecto/inscribir-usuario" method="post"> {% csrf_token %}
+        {% for grupo in object.grupo_set.all %}
+            <h3>
+                <input type="radio" name="id_grupo" value={{ grupo.id }}> {{ grupo.nombre }} -
+                Capacidad {{ grupo.capacidad }}<br>
+            </h3>
+
+            <ul>
+                {% for horario in grupo.horario_set.all %}
+                    <li>
+                        {{ horario }}
+                    </li>
+                {% endfor %}
+            </ul>
+
+        {% endfor %}
+
+
+        <p><b>Nota:</b> Selecciona el grupo en el que estás interesado</p>
+
+        <h2> Administrador </h2>
+
+        <p> {{ object.administrador }} - {{ object.administrador.email }} </p>
+
+        <br><input type="submit" value="Registrarme al grupo seleccionado"><br>
+    </form>
 </body>
 </html>
 
+{% endblock %}
 

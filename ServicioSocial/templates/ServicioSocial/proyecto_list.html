@@ -1,3 +1,28 @@
+{% extends 'registration/base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="/">Proyectos</a>
+        {% if title %} &rsaquo; {{ title }}{% endif %}
+    </div>
+{% endblock %}
+
+
+{% block content %}
+
+    <h1>Inicia sesión</h1>
+    <form>
+        <p><a href="/accounts/login/">Iniciar sesión</a></p>
+        <input type="hidden" name="next" value="{{ next }}"/>
+
+    </form>
+    <h1>¿Aún no estás registrado?</h1>
+    <p><a href="registro">Registrar nuevo usuario</a></p>
+
+
 <h1>Proyectos</h1>
 <ul>
 {% for proyecto in object_list %}
@@ -14,3 +39,5 @@
     <li>Aun no hay proyectos</li>
 {% endfor %}
 </ul>
+{% endblock %}
+
