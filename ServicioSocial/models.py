@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.datetime_safe import datetime
 from django.utils.encoding import python_2_unicode_compatible
 
 # Create your models here.
@@ -104,7 +105,6 @@ class ListaEspera(models.Model):
         verbose_name_plural = 'Listas de Espera'
         verbose_name = 'Lista de espera'
 
-
     def __str__(self):
         return self.grupo.nombre + ' - ' + self.grupo.proyecto.nombre
 
@@ -114,6 +114,7 @@ class DetalleEspera(models.Model):
     lista_espera = models.ForeignKey(ListaEspera)
     usuario = models.ForeignKey(User)
     aprobado = models.NullBooleanField()
+    fecha_registro = models.DateTimeField(auto_now=True, default=datetime.now)
 
     def __str__(self):
         return self.lista_espera.grupo.nombre + ' - ' + self.lista_espera.grupo.proyecto.nombre
@@ -121,3 +122,12 @@ class DetalleEspera(models.Model):
     class Meta:
         unique_together = ('usuario', 'lista_espera')
         verbose_name_plural = 'Alumnos en la lista de espera'
+
+
+class UserProfile(models.Model):
+    facebook = models.URLField()
+    matricula = models.CharField(max_length=10)
+    semestre = models.IntegerField()
+    telefono = models.CharField(max_length=15)
+    carrera = models.ForeignKey(Carrera, blank=True, null=True)
+    user = models.OneToOneField(User)

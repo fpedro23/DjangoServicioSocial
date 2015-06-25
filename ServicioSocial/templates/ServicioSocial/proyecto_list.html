@@ -6,6 +6,10 @@
 {% block breadcrumbs %}
     <div class="breadcrumbs">
         <a href="/">Proyectos</a>
+        {% if user.is_active %}
+            <a href="/logout"> - Logout</a>
+        {% endif %}
+
         {% if title %} &rsaquo; {{ title }}{% endif %}
     </div>
 {% endblock %}
@@ -13,31 +17,42 @@
 
 {% block content %}
 
-    <h1>Inicia sesión</h1>
-    <form>
-        <p><a href="/accounts/login/">Iniciar sesión</a></p>
-        <input type="hidden" name="next" value="{{ next }}"/>
+    {% if user.is_active == False %}
+        <h1>Inicia sesión</h1>
+        <form>
+            <p><a href="/accounts/login/">Iniciar sesión</a></p>
+            <input type="hidden" name="next" value="{{ next }}"/>
 
-    </form>
-    <h1>¿Aún no estás registrado?</h1>
-    <p><a href="registro">Registrar nuevo usuario</a></p>
+        </form>
+        <h1>¿Aún no estás registrado?</h1>
+        <p><a href="registro">Registrar nuevo usuario</a></p>
+        <p><a>Inicia sesión para ver los proyectos</a></p>
+
+    {% endif %}
+
+    {% if user.is_active %}
+        <h1> Bienvenido: {{ user }}</h1>
 
 
-<h1>Proyectos</h1>
-<ul>
-{% for proyecto in object_list %}
-    <li>
-        <p>
-            <a href="/proyecto/{{ proyecto.id }}/">{{ proyecto.nombre }} - {{ proyecto.numero_horas}} horas</a>
-                 {%for carrera in proyecto.carreras.all %}
-                    {{ carrera.iniciales }},
-                 {% endfor %}
-        </p>
-    </li>
 
-{% empty %}
-    <li>Aun no hay proyectos</li>
-{% endfor %}
-</ul>
+        <h1>Proyectos</h1>
+        <ul>
+            {% for proyecto in object_list %}
+                <li>
+                    <p>
+                        <a href="/proyecto/{{ proyecto.id }}/">{{ proyecto.nombre }} - {{ proyecto.numero_horas }}
+                            horas</a>
+                        {% for carrera in proyecto.carreras.all %}
+                            {{ carrera.iniciales }},
+                        {% endfor %}
+                    </p>
+                </li>
+
+            {% empty %}
+                <li>Aun no hay proyectos</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
 {% endblock %}
 

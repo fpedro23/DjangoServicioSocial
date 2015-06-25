@@ -15,11 +15,21 @@
     <div class="breadcrumbs">
         <a href="/">Proyectos</a>
         {% if title %} &rsaquo; {{ title }}{% endif %}
+        {% if user.is_active %}
+            <a href="/logout"> - Logout</a>
+        {% endif %}
     </div>
 {% endblock %}
 
+
+
+
 {% block content %}
-<h1>{{ object.nombre }} - {{ object.numero_horas }} horas</h1>
+    {% if user.is_active %}
+        <h1> Bienvenido: {{ user }}</h1>
+    {% endif %}
+
+    <h1>{{ object.nombre }} - {{ object.numero_horas }} horas</h1>
 
     <h2> Descripcion </h2>
 
@@ -45,7 +55,7 @@
     <ul>
         {% for carrera in object.carreras.all %}
             <li>{{ carrera.iniciales }} </li>
-    {% endfor %}
+        {% endfor %}
     </ul>
 
 
@@ -79,8 +89,8 @@
 
         <br><input type="submit" value="Registrarme al grupo seleccionado"><br>
     </form>
-</body>
-</html>
+    </body>
+    </html>
 
 {% endblock %}
 
