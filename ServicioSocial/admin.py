@@ -32,7 +32,8 @@ class ProyectoAdmin(admin.ModelAdmin):
     inlines = (GrupoInLine, )
     fieldsets = (
         ('Descripcion de proyecto', {
-            'fields': ('nombre', 'administrador', 'descripcion', 'numero_horas', 'ubicacion', )
+            'fields': ('nombre', 'administrador', 'descripcion', 'numero_horas', 'ubicacion', 'fecha_inicio_proyecto',
+                       'fecha_termino_proyecto')
         }),
         ('Fechas de registro', {
             'fields': ('fecha_registro_inicio', 'fecha_registro_fin',)
