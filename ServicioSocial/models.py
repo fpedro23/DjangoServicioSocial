@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.datetime_safe import datetime
 from django.utils.encoding import python_2_unicode_compatible
 
 # Create your models here.
@@ -114,7 +113,7 @@ class DetalleEspera(models.Model):
     lista_espera = models.ForeignKey(ListaEspera)
     usuario = models.ForeignKey(User)
     aprobado = models.NullBooleanField()
-    fecha_registro = models.DateTimeField(auto_now=True, default=datetime.now)
+    fecha_registro = models.DateTimeField(auto_now=True, )
 
     def __str__(self):
         return self.lista_espera.grupo.nombre + ' - ' + self.lista_espera.grupo.proyecto.nombre
