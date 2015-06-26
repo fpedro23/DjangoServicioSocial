@@ -6,7 +6,6 @@ from django.views.generic.detail import DetailView
 from django.utils import timezone
 
 from ServicioSocial.forms import UserCreateForm
-
 from ServicioSocial.models import *
 
 
@@ -34,17 +33,28 @@ class ProyectoDetailView(DetailView):
 
 @login_required
 def registrar_espera(request):
-    lista_espera = ListaEspera.objects.get(grupo__id=request.POST.get('id_grupo'))
-    nuevo_detalle = DetalleEspera()
-    nuevo_detalle.usuario = request.user
-    nuevo_detalle.aprobado = None
-    nuevo_detalle.lista_espera = lista_espera
+    if request.POST.get('id_grupo', None) is None:
+        print 'No hay grupo'
+    else:
 
-    try:
-        nuevo_detalle.save()
-        html = "<html><body>Has sido inscrito satisfactoriamente en el grupo: %s.</body></html>" % lista_espera.grupo
-    except Exception as e:
-        html = "<html><body>Error, ya te haz inscrito previamente en el grupo: %s.</body></html>" % lista_espera.grupo
+        try:
+            lista_espera = ListaEspera.objects.get(grupo__id=request.POST.get('id_grupo', None))
+        except Exception as e:
+            lista_espera = ListaEspera()
+            print request.POST.get('id_grupo')
+            lista_espera.grupo = Grupo.objects.get(id=request.POST.get('id_grupo'))
+            lista_espera.save()
+
+        nuevo_detalle = DetalleEspera()
+        nuevo_detalle.usuario = request.user
+        nuevo_detalle.aprobado = None
+        nuevo_detalle.lista_espera = lista_espera
+
+        try:
+            nuevo_detalle.save()
+            html = "<html><body>Has sido inscrito satisfactoriamente en el grupo: %s.</body></html>" % lista_espera.grupo
+        except Exception as e:
+            html = "<html><body>Error, ya te haz inscrito previamente en el grupo: %s.</body></html>" % lista_espera.grupo
 
     return HttpResponse(html)
 
