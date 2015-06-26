@@ -70,8 +70,11 @@
     <form action="/proyecto/inscribir-usuario" method="post"> {% csrf_token %}
         {% for grupo in object.grupo_set.all %}
             <h3>
-                <input type="radio" name="id_grupo" value={{ grupo.id }}> {{ grupo.nombre }} -
-                Capacidad: {{ grupo.alumnos.count }} / {{ grupo.capacidad }}<br>
+                <input type="radio" checked="checked" name="id_grupo" value={{ grupo.id }}> {{ grupo.nombre }} -
+                Capacidad Grupo: {{ grupo.alumnos.count }} / {{ grupo.capacidad }} - Capacidad Lista espera:
+                {{ grupo.listaespera_set.first.usuarios.count }} / {{ grupo.capacidad|add:grupo.capacidad }}
+                <br>
+
             </h3>
 
             <ul>

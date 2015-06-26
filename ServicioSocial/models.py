@@ -96,7 +96,7 @@ class Proyecto(models.Model):
     semestre_minimo = models.IntegerField()
     ubicacion = models.ForeignKey(Ubicacion)
     carreras = models.ManyToManyField(Carrera)
-    administrador = models.ForeignKey(User, default=1)
+    administrador = models.ForeignKey(User, default=1, limit_choices_to={'is_staff': True})
     fecha_inicio_proyecto = models.DateField(blank=True, null=True)
     fecha_termino_proyecto = models.DateField(blank=True, null=True)
 

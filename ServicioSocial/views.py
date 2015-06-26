@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -18,7 +19,7 @@ class ProyectosListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ProyectosListView, self).get_context_data(**kwargs)
-        context['now'] = timezone.now()
+        context['listaespera'] = timezone.now()
         return context
 
 
@@ -27,14 +28,15 @@ class ProyectoDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProyectoDetailView, self).get_context_data(**kwargs)
-        context['now'] = timezone.now()
+        context['listaespera'] = timezone.now()
         return context
 
 
 @login_required
 def registrar_espera(request):
     if request.POST.get('id_grupo', None) is None:
-        print 'No hay grupo'
+        html = "<html><body>Debes de seleccionar al menos un horario para inscribirte</body></html>"
+
     else:
 
         try:
@@ -45,16 +47,21 @@ def registrar_espera(request):
             lista_espera.grupo = Grupo.objects.get(id=request.POST.get('id_grupo'))
             lista_espera.save()
 
-        nuevo_detalle = DetalleEspera()
-        nuevo_detalle.usuario = request.user
-        nuevo_detalle.aprobado = None
-        nuevo_detalle.lista_espera = lista_espera
+        if lista_espera.usuarios.count() >= lista_espera.grupo.capacidad * 2:
+            html = "<html><body>Error, La lista de espera esta llena, intenta inscribirte en otro grupo </body></html>"
 
-        try:
-            nuevo_detalle.save()
-            html = "<html><body>Has sido inscrito satisfactoriamente en el grupo: %s.</body></html>" % lista_espera.grupo
-        except Exception as e:
-            html = "<html><body>Error, ya te haz inscrito previamente en el grupo: %s.</body></html>" % lista_espera.grupo
+        else:
+            nuevo_detalle = DetalleEspera()
+            nuevo_detalle.usuario = request.user
+            nuevo_detalle.aprobado = None
+            nuevo_detalle.lista_espera = lista_espera
+
+            try:
+                nuevo_detalle.save()
+                html = "<html><body>Has sido inscrito satisfactoriamente en la lista de espera, espera " \
+                       "la autorización del administrador: %s.</body></html>" % lista_espera.grupo
+            except Exception as e:
+                html = "<html><body>Error, ya te haz inscrito previamente en la lista de espera: %s.</body></html>" % lista_espera.grupo
 
     return HttpResponse(html)
 
