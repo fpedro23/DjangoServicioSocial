@@ -77,6 +77,17 @@
             <ul>
                 {% for horario in grupo.horario_set.all %}
                     <li>
+                        {% for dia in horario.dias.all %}
+                            {% if forloop.last %}
+                                y {{ dia }}:
+                            {% elif forloop.counter == horario.dias.count|add:"-1" %}
+                                {{ dia }}
+                            {% else %}
+                                {{ dia }},
+                            {% endif %}
+
+
+                        {% endfor %}
                         {{ horario }}
                     </li>
                 {% endfor %}

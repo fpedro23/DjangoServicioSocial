@@ -6,6 +6,7 @@ from ServicioSocial.forms import *
 
 
 
+
 # Register your models here.
 
 
@@ -137,3 +138,4 @@ admin.site.register(Proyecto, ProyectoAdmin)
 admin.site.register(ListaEspera, ListaEsperaAdmin)
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Dia)

@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -30,23 +31,31 @@ class Carrera(models.Model):
 
 
 @python_2_unicode_compatible
-class Horario(models.Model):
+class Dia(models.Model):
     DAYS_CHOICES = (
         ('Lunes', 'Lunes'),
         ('Martes', 'Martes'),
-        ('Miercoles', 'Miercoles'),
+        ('Miercoles', 'Miércoles'),
         ('Jueves', 'Jueves'),
         ('Viernes', 'Viernes'),
         ('Sabado', 'Sabado'),
         ('Domingo', 'Domingo'),
     )
     dia = models.CharField(max_length=15, choices=DAYS_CHOICES, default='Lunes')
+
+    def __str__(self):
+        return self.dia
+
+
+@python_2_unicode_compatible
+class Horario(models.Model):
+    dias = models.ManyToManyField(Dia)
     hora_inicio = models.TimeField()
     hora_termino = models.TimeField()
     grupo = models.ForeignKey('Grupo', blank=True, null=True)
 
     def __str__(self):
-        return self.dia + ' - ' + self.hora_inicio.__str__() + ' - ' + self.hora_termino.__str__()
+        return self.hora_inicio.__str__() + ' - ' + self.hora_termino.__str__()
 
 
 @python_2_unicode_compatible
