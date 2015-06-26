@@ -35,9 +35,13 @@
 
     <p>{{ object.descripcion }}</p>
 
-    <h2> Fecha de registro </h2>
+    <h2> Fechas de registro </h2>
 
     <p> Del {{ object.fecha_registro_inicio }} al {{ object.fecha_registro_fin }} </p>
+
+    <h2> Fechas de Inicio y Fin Del Proyecto </h2>
+
+    <p> Del {{ object.fecha_inicio_proyecto }} al {{ object.fecha_termino_proyecto }} </p>
 
     <h2> Requisitos </h2>
 
@@ -85,7 +89,8 @@
 
         <h2> Administrador </h2>
 
-        <p> {{ object.administrador }} - {{ object.administrador.email }} </p>
+        <p> {{ object.administrador.first_name }} {{ object.administrador.last_name }}
+            - {{ object.administrador.email }} </p>
 
         <br><input type="submit" value="Registrarme al grupo seleccionado"><br>
     </form>
