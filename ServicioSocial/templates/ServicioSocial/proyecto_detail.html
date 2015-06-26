@@ -67,7 +67,7 @@
         {% for grupo in object.grupo_set.all %}
             <h3>
                 <input type="radio" name="id_grupo" value={{ grupo.id }}> {{ grupo.nombre }} -
-                Capacidad {{ grupo.capacidad }}<br>
+                Capacidad: {{ grupo.alumnos.count }} / {{ grupo.capacidad }}<br>
             </h3>
 
             <ul>
