@@ -48,6 +48,14 @@ def registrar_espera(request):
             lista_espera.save()
 
         try:
+            user = request.user.userprofile
+        except Exception as e:
+            html = "<html><body>Error, no tienes un perfil de usuario, probablemente eres un administrador intentando" \
+                   " registrarse a un grupo" \
+                   ".</body></html>"
+            return HttpResponse(html)
+
+        try:
             result = lista_espera.grupo.proyecto.carreras.get(id=request.user.userprofile.carrera.id)
         except Exception as e:
             html = "<html><body>Error, no puedes inscribirte en un proyecto que no esté disponible para tu carrera" \
