@@ -26,7 +26,7 @@
 
 {% block content %}
     {% if user.is_active %}
-        <h1> Bienvenido: {{ user }}</h1>
+        <h1> Bienvenido: {{ user }} - {{ user.userprofile.carrera }}</h1>
     {% endif %}
 
     <h1>{{ object.nombre }} - {{ object.numero_horas }} horas</h1>
@@ -106,7 +106,10 @@
         <p> {{ object.administrador.first_name }} {{ object.administrador.last_name }}
             - {{ object.administrador.email }} </p>
 
+
+        {% if now >= object.fecha_registro_inicio and now <= object.fecha_registro_fin %}
         <br><input type="submit" value="Registrarme al grupo seleccionado"><br>
+        {% endif %}
     </form>
     </body>
     </html>

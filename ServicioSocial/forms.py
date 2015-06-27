@@ -29,12 +29,14 @@ class AddDetalleEsperaForm(forms.ModelForm):
 class UserCreateForm(UserCreationForm):
     email = forms.EmailField(required=True)
     facebook = forms.URLField(required=True)
-    matricula = forms.CharField(max_length=10)
+
     regex_matricula = r'^A[0-9]{8}'
-    semestre = forms.RegexField(regex=regex_matricula,
-                                error_message='Introduce tu matricula en formato A00000000',
-                                max_length=8,
-                                )
+
+    matricula = forms.RegexField(regex=regex_matricula,
+                                 error_message='Introduce tu matricula en formato A00000000',
+                                 )
+
+    semestre = forms.IntegerField()
     telefono = forms.CharField(max_length=15)
     carrera = forms.ModelChoiceField(queryset=Carrera.objects.all())
 

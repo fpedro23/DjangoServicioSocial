@@ -28,7 +28,7 @@ class ProyectoDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProyectoDetailView, self).get_context_data(**kwargs)
-        context['listaespera'] = timezone.now()
+        context['now'] = timezone.now()
         return context
 
 
@@ -46,6 +46,13 @@ def registrar_espera(request):
             print request.POST.get('id_grupo')
             lista_espera.grupo = Grupo.objects.get(id=request.POST.get('id_grupo'))
             lista_espera.save()
+
+        try:
+            result = lista_espera.grupo.proyecto.carreras.get(id=request.user.userprofile.carrera.id)
+        except Exception as e:
+            html = "<html><body>Error, no puedes inscribirte en un proyecto que no esté disponible para tu carrera" \
+                   ".</body></html>"
+            return HttpResponse(html)
 
         if lista_espera.usuarios.count() >= lista_espera.grupo.capacidad * 2:
             html = "<html><body>Error, La lista de espera esta llena, intenta inscribirte en otro grupo </body></html>"
