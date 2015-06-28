@@ -132,6 +132,7 @@ class DetalleEspera(models.Model):
         verbose_name_plural = 'Alumnos en la lista de espera'
 
 
+@python_2_unicode_compatible
 class UserProfile(models.Model):
     facebook = models.URLField()
     matricula = models.CharField(max_length=10)
@@ -139,3 +140,6 @@ class UserProfile(models.Model):
     telefono = models.CharField(max_length=15)
     carrera = models.ForeignKey(Carrera, blank=True, null=True)
     user = models.OneToOneField(User)
+
+    def __str__(self):
+        return self.matricula
