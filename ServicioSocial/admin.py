@@ -7,6 +7,8 @@ from ServicioSocial.forms import *
 
 
 
+
+
 # Register your models here.
 
 
@@ -90,9 +92,6 @@ class UsuarioGrupoInLine(admin.TabularInline):
         return instance.usuario.userprofile.semestre
 
 
-
-
-
     email.short_description = 'Email'
     carrera.short_description = 'Carrera'
 
@@ -128,6 +127,17 @@ class ProyectoAdmin(admin.ModelAdmin):
         ('Perfil', {
             'fields': ('requisitos', 'semestre_maximo', 'semestre_minimo', 'carreras')
         }),
+    )
+
+    list_display = (
+        'nombre',
+        'numero_horas',
+        'fecha_inicio_proyecto',
+        'fecha_termino_proyecto',
+        'fecha_registro_inicio',
+        'fecha_registro_fin',
+        'ubicacion',
+        'administrador',
     )
 
 
