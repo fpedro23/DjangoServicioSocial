@@ -9,6 +9,7 @@ from ServicioSocial.forms import *
 
 
 
+
 # Register your models here.
 
 
@@ -134,8 +135,6 @@ class ProyectoAdmin(admin.ModelAdmin):
         'numero_horas',
         'fecha_inicio_proyecto',
         'fecha_termino_proyecto',
-        'fecha_registro_inicio',
-        'fecha_registro_fin',
         'ubicacion',
         'administrador',
     )
