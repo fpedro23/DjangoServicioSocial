@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from django.utils.datetime_safe import datetime
 
 from ServicioSocial.models import DetalleEspera, DetalleInscripcion, UserProfile, Carrera
 
@@ -48,7 +47,6 @@ class UserCreateForm(UserCreationForm):
     def save(self, commit=True):
         user = super(UserCreateForm, self).save(commit=True)
         user.email = self.cleaned_data["email"]
-        user.last_login = datetime.now
 
         user_profile = UserProfile()
         user_profile.user = user
