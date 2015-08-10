@@ -135,7 +135,7 @@ class DetalleEspera(models.Model):
 @python_2_unicode_compatible
 class UserProfile(models.Model):
     facebook = models.URLField()
-    matricula = models.CharField(max_length=10)
+    matricula = models.CharField(max_length=10, unique=True)
     semestre = models.IntegerField()
     telefono = models.CharField(max_length=15)
     carrera = models.ForeignKey(Carrera, blank=True, null=True)

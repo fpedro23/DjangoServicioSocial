@@ -1,4 +1,5 @@
 # coding=utf-8
+import collections
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.http import HttpResponse
@@ -176,11 +177,32 @@ def export_xlsx(modeladmin, request, queryset):
     return response
 
 
-export_xlsx.short_description = u"Export XLSX"
+export_xlsx.short_description = u"Exportar a Excel"
+
+
+def export_xlsx_duplicates(modeladmin, request, queryset):
+
+    usuarios_proyecto = {}
+
+    for listaEspera in queryset:
+        usuarios_proyecto[listaEspera.grupo] = listaEspera.usuarios.all()
+
+    all_lists = list(usuarios_proyecto.values())
+    print all_lists
+    common_links = set(all_lists[0]).intersection(*all_lists[1:])
+
+    print common_links
+
+
+export_xlsx_duplicates.short_description = u"Encontrar duplicados y exportar a Excel"
+
+
+
+
 
 class ListaEsperaAdmin(admin.ModelAdmin):
     inlines = (UsuariosInLine, )
-    actions = [export_xlsx, ]
+    actions = [export_xlsx, export_xlsx_duplicates, ]
 
 
 class GrupoAdmin(admin.ModelAdmin):
