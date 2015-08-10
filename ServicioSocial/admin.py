@@ -1,5 +1,7 @@
+# coding=utf-8
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.http import HttpResponse
 
 from ServicioSocial.models import *
 from ServicioSocial.forms import *
@@ -107,8 +109,78 @@ class GrupoInLine(admin.StackedInline):
     extra = 1
 
 
+def export_xlsx(modeladmin, request, queryset):
+    import openpyxl
+    from openpyxl.cell import get_column_letter
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=ListasEspera.xlsx'
+    wb = openpyxl.Workbook()
+    ws = wb.get_active_sheet()
+    ws.title = "Lista de Espera"
+
+    row_num = 0
+
+    columns = [
+        (u"Nombre", 30),
+        (u"Apellidos", 30),
+        (u"Aprobado", 30),
+        (u"Email", 30),
+        (u"Carrera", 30),
+        (u"Telefono", 30),
+        (u"Facebook", 30),
+        (u"Matricula", 30),
+        (u"Semestre", 30),
+        (u"Fecha de Registro", 30),
+
+    ]
+
+    for col_num in xrange(len(columns)):
+        c = ws.cell(row=row_num + 1, column=col_num + 1)
+        c.value = columns[col_num][0]
+        c.style.font.bold = True
+        # set column width
+        ws.column_dimensions[get_column_letter(col_num + 1)].width = columns[col_num][1]
+
+    # Recibe un modelo de ListaEspera
+
+    for obj in queryset:
+
+        try:
+            for detalleEspera in obj.detalleespera_set.all():
+                print detalleEspera.usuario
+
+                row_num += 1
+                row = [
+                    detalleEspera.usuario.first_name,
+                    detalleEspera.usuario.last_name,
+                    detalleEspera.aprobado,
+                    detalleEspera.usuario.email,
+                    detalleEspera.usuario.userprofile.carrera.iniciales,
+                    detalleEspera.usuario.userprofile.telefono,
+                    detalleEspera.usuario.userprofile.facebook,
+                    detalleEspera.usuario.userprofile.matricula,
+                    detalleEspera.usuario.userprofile.semestre,
+                    detalleEspera.fecha_registro
+                ]
+
+                for col_num in xrange(len(row)):
+                    c = ws.cell(row=row_num + 1, column=col_num + 1)
+                    c.value = row[col_num]
+                    c.style.alignment.wrap_text = True
+
+        except Exception as e:
+            print e
+
+    wb.save(response)
+    return response
+
+
+export_xlsx.short_description = u"Export XLSX"
+
 class ListaEsperaAdmin(admin.ModelAdmin):
     inlines = (UsuariosInLine, )
+    actions = [export_xlsx, ]
 
 
 class GrupoAdmin(admin.ModelAdmin):
