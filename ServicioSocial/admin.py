@@ -123,6 +123,7 @@ def export_xlsx(modeladmin, request, queryset):
     row_num = 0
 
     columns = [
+        (u"Grupo", 30),
         (u"Nombre", 30),
         (u"Apellidos", 30),
         (u"Aprobado", 30),
@@ -148,11 +149,12 @@ def export_xlsx(modeladmin, request, queryset):
     for obj in queryset:
 
         try:
+            print obj
             for detalleEspera in obj.detalleespera_set.all():
-                print detalleEspera.usuario
 
                 row_num += 1
                 row = [
+                    detalleEspera.__str__(),
                     detalleEspera.usuario.first_name,
                     detalleEspera.usuario.last_name,
                     detalleEspera.aprobado,
