@@ -202,7 +202,7 @@ export_xlsx_duplicates.short_description = u"Encontrar duplicados y exportar a E
 
 class ListaEsperaAdmin(admin.ModelAdmin):
     inlines = (UsuariosInLine, )
-    actions = [export_xlsx, export_xlsx_duplicates, ]
+    actions = [export_xlsx, ]
 
 
 class GrupoAdmin(admin.ModelAdmin):
